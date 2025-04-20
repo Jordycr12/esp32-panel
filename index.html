@@ -29,16 +29,21 @@
   </div>
 
   <script>
-    // 🌐 WebSocket al servidor de Render
+    // Conexión WebSocket al servidor en Render
     const ws = new WebSocket("wss://esp32-panel-server.onrender.com/ws");
 
-    ws.onopen = function() {
+    ws.onopen = function () {
       console.log("✅ Conectado al WebSocket");
     };
 
-    ws.onmessage = function(event) {
-      console.log("📥 Peso recibido:", event.data);
-      document.getElementById("peso").innerText = event.data;
+    ws.onmessage = function (e) {
+      const mensaje = e.data;
+      console.log("📥 Mensaje recibido:", mensaje);
+
+      // Mostrar solo si parece ser un dato de peso (ej: 100kg)
+      if (/^\d+(\.\d+)?[a-zA-Z]+$/.test(mensaje)) {
+        document.getElementById("peso").innerText = mensaje;
+      }
     };
 
     function sendCmd(cmd) {
@@ -46,7 +51,7 @@
         console.log("📤 Enviando comando:", cmd);
         ws.send("CMD:" + cmd);
       } else {
-        alert("Conexión WebSocket no activa.");
+        alert("WebSocket no conectado");
       }
     }
   </script>
