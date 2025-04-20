@@ -47,13 +47,14 @@
     };
 
     function sendCmd(cmd) {
-      if (ws.readyState === WebSocket.OPEN) {
-        console.log("📤 Enviando comando:", cmd);
-        ws.send("CMD:" + cmd);
-      } else {
-        alert("WebSocket no conectado");
-      }
-    }
+  if (ws.readyState === WebSocket.OPEN) {
+    console.log("📤 Enviando comando:", cmd);
+    ws.send(cmd);  // ✅ Solo manda 'P', 'Z', etc.
+  } else {
+    alert("WebSocket no conectado");
+  }
+}
+
   </script>
 </body>
 </html>
